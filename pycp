@@ -22,18 +22,22 @@ def destdir():
 	if '/' in dst_files[0:-1]:
 		fdst = open(dst_files+i,'a')
 		fdst.write(src_data)
+		fdst.close()
 	else:
 		fdst = open(pwd+'/'+dst_files+i,'a')
 		fdst.write(src_data)
+		fdst.close()
 
 def destfile():
 	global dst_files
 	if '/' in dst_files:
 		fdst = open(dst_files,'a')
 		fdst.write(src_data)
+		fdst.close()
 	else:
 		fdst = open(pwd+'/'+dst_files,'a')
 		fdst.write(src_data)
+		fdst.close()
 
 for i in src_files:
 	if os.path.isdir(i):
@@ -43,6 +47,7 @@ for i in src_files:
 		if os.path.exists(i) and '/' in i:
 			fsrc = open(i,'r')
 			src_data = fsrc.read()
+			fsrc.close()
 			if os.path.isdir(dst_files):
 				destdir()
 			else:
@@ -51,6 +56,7 @@ for i in src_files:
 		elif os.path.exists(pwd+'/'+i):
 			fsrc = open(pwd+'/'+i,'r')
 			src_data = fsrc.read()
+			fsrc.close()
 			if os.path.isdir(dst_files):
 				destdir()
 			else:
