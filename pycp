@@ -1,13 +1,14 @@
 #!/usr/bin/env python2
 
-import sys
-import subprocess
-import os
+import sys  #for inline input
+import subprocess  #for executing terminal command
+import os  #for checking if selected item is file or directory and its path
 
-files = sys.argv
+files = sys.argv #inline input
 
 option = files[1]
 
+#operation if -v option is included
 if option == '-v':
 	src_files = files[2:-1]
 	dst_files = files[-1]
@@ -17,15 +18,16 @@ else:
 	src_files = files[1:-1]
 	dst_files = files[-1]
 
-pwdraw = subprocess.check_output('pwd',shell=True)
-pwd = pwdraw[0:-1]
+pwdraw = subprocess.check_output('pwd',shell=True) #fetching 'present working directory' path from terminal
+pwd = pwdraw[0:-1] #for removing \n from last of pwd path obtained
 
 #defining functions for destination directory and destination file
 def destdir():
-	global dst_files
+	global dst_files 
 	if dst_files[-1] != '/':
 		dst_files = dst_files + '/'
 
+	#differentiating full path file name with direct name (because usr is in pwd)
 	if '/' in dst_files[0:-1]:
 		fdst = open(dst_files+i,'a')
 		fdst.write(src_data)
@@ -47,20 +49,20 @@ def destfile():
 		fdst.close()
 
 for i in src_files:
-	if os.path.isdir(i):
+	if os.path.isdir(i):  #checking if source is directory or not
 		print "\nERROR: '"+i+"' is a directory , cannot copy a directory "
 		exit()
 	else:
-		if os.path.exists(i) and '/' in i:
+		if os.path.exists(i) and '/' in i: #checking if specified full path name file exists 
 			fsrc = open(i,'r')
 			src_data = fsrc.read()
 			fsrc.close()
-			if os.path.isdir(dst_files):
+			if os.path.isdir(dst_files): #checking if destination file is directory or not 
 				destdir()
 			else:
 				destfile()
 
-		elif os.path.exists(pwd+'/'+i):
+		elif os.path.exists(pwd+'/'+i): #checking if direct name file exists in pwd
 			fsrc = open(pwd+'/'+i,'r')
 			src_data = fsrc.read()
 			fsrc.close()
