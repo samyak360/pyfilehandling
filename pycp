@@ -6,9 +6,16 @@ import os
 
 files = sys.argv
 
-src_files = files[1:-1]
+option = files[1]
 
-dst_files = files[-1]
+if option == '-v':
+	src_files = files[2:-1]
+	dst_files = files[-1]
+	for j in src_files:
+		print j," -> ",dst_files
+else:
+	src_files = files[1:-1]
+	dst_files = files[-1]
 
 pwdraw = subprocess.check_output('pwd',shell=True)
 pwd = pwdraw[0:-1]
