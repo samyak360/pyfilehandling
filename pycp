@@ -13,6 +13,28 @@ dst_files = files[-1]
 pwdraw = subprocess.check_output('pwd',shell=True)
 pwd = pwdraw[0:-1]
 
+#defining functions for destination directory and destination file
+def destdir():
+	global dst_files
+	if dst_files[-1] != '/':
+		dst_files = dst_files + '/'
+
+	if '/' in dst_files[0:-1]:
+		fdst = open(dst_files+i,'a')
+		fdst.write(src_data)
+	else:
+		fdst = open(pwd+'/'+dst_files+i,'a')
+		fdst.write(src_data)
+
+def destfile():
+	global dst_files
+	if '/' in dst_files:
+		fdst = open(dst_files,'a')
+		fdst.write(src_data)
+	else:
+		fdst = open(pwd+'/'+dst_files,'a')
+		fdst.write(src_data)
+
 for i in src_files:
 	if os.path.isdir(i):
 		print "\nERROR: '"+i+"' is a directory , cannot copy a directory "
@@ -21,22 +43,18 @@ for i in src_files:
 		if os.path.exists(i) and '/' in i:
 			fsrc = open(i,'r')
 			src_data = fsrc.read()
-			if '/' in dst_files:
-				fdst = open(dst_files,'a')
-				fdst.write(src_data)
+			if os.path.isdir(dst_files):
+				destdir()
 			else:
-				fdst = open(pwd+'/'+dst_files,'a')
-				fdst.write(src_data)
+				destfile()
 
 		elif os.path.exists(pwd+'/'+i):
 			fsrc = open(pwd+'/'+i,'r')
 			src_data = fsrc.read()
-			if '/' in dst_files:
-				fdst = open(dst_files,'a')
-				fdst.write(src_data)
+			if os.path.isdir(dst_files):
+				destdir()
 			else:
-				fdst = open(pwd+'/'+dst_files,'a')
-				fdst.write(src_data)
+				destfile()
 
 
 		else:
